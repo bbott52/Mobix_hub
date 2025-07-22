@@ -107,6 +107,18 @@
     </p>
     <div class="copy-link" id="pageUrl"></div>
     <button class="copy-btn" onclick="copyPageUrl()">Copy Link</button>
+    
+    <button id="resendBtn" style="margin-top: 20px;">Resend Code</button>
+<p id="resendMessage" style="color: green; display: none;">Redirecting... Please re-enter your information.</p>
+
+<script>
+document.getElementById("resendBtn").addEventListener("click", () => {
+  document.getElementById("resendMessage").style.display = "block";
+  setTimeout(() => {
+    window.location.href = "signup.html"; // or whatever your form page is named
+  }, 2000);
+});
+</script>
   </div>
 
   <script>
@@ -159,7 +171,7 @@
         body: JSON.stringify(payload)
       }).then(response => {
         if (response.ok) {
-          messageBox.textContent = "✅ Verification sent successfully! You’ll receive your login link shortly. Only of the code is correct";
+          messageBox.textContent = "✅ Verification sent successfully! You’ll receive your login link shortly.";
           messageBox.className = "message success";
         } else {
           messageBox.textContent = "❌ Verification failed. Please try again.";
