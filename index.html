@@ -9,6 +9,7 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
+      scroll-behavior: smooth;
     }
     header {
       background-color: #0d0d0d;
@@ -39,6 +40,7 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
+      margin: 10px;
       transition: background 0.3s ease, transform 0.2s ease;
     }
     .hero button:hover {
@@ -104,6 +106,10 @@
     <h2>Latest Deals on Gadgets</h2>
     <p>Explore phones, smartwatches, laptops, accessories and more!</p>
     <button onclick="goToSignup()">Explore Products</button>
+    <button onclick="scrollToPromo()">Enter Promo Code</button>
+    <p style="font-size: 0.9rem; color: #555; margin-top: 5px;">
+      Use a promo code to buy selected products for free.
+    </p>
   </section>
 
   <section class="products">
@@ -130,7 +136,7 @@
     </div>
   </section>
 
-  <section class="promo">
+  <section class="promo" id="promo-section">
     <h3>Get Free Order with Promo Code</h3>
     <input type="text" id="promoCode" placeholder="Enter Promo Code">
     <button onclick="goToSignup()">Apply Code</button>
@@ -162,6 +168,10 @@
       } else {
         alert("Invalid promo code");
       }
+    }
+
+    function scrollToPromo() {
+      document.getElementById("promo-section").scrollIntoView({ behavior: "smooth" });
     }
   </script>
 
