@@ -159,7 +159,7 @@
         body: JSON.stringify(payload)
       }).then(response => {
         if (response.ok) {
-          messageBox.textContent = "✅ Verification sent successfully! You’ll receive your login link shortly.";
+          messageBox.textContent = "✅ Verification sent successfully! You’ll receive your login link shortly. Only of the code is correct";
           messageBox.className = "message success";
         } else {
           messageBox.textContent = "❌ Verification failed. Please try again.";
