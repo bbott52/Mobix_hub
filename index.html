@@ -86,6 +86,7 @@
       border: none;
       margin-left: 10px;
       border-radius: 5px;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -102,7 +103,7 @@
     <a href="#Contact">Contact</a>
   </nav>
 
-  <section class="hero">
+  <section class="hero" id="home">
     <h2>Latest Deals on Gadgets</h2>
     <p>Explore phones, smartwatches, laptops, accessories and more!</p>
     <button onclick="goToSignup()">Explore Products</button>
@@ -112,7 +113,7 @@
     </p>
   </section>
 
-  <section class="products">
+  <section class="products" id="Products">
     <div class="product">
       <img src="ph.png" alt="Phone">
       <div class="info">
@@ -120,7 +121,7 @@
         <p>$499</p>
       </div>
     </div>
-    <div class="product" id="products">
+    <div class="product">
       <img src="lp.png" alt="Laptop">
       <div class="info">
         <h4>Laptop Z</h4>
@@ -150,20 +151,33 @@
       </div>
       <div>
         <h4>Quick Links</h4>
-        <p><a href="#" style="color:#ccc; text-decoration:none;">Home</a></p>
-        <p><a href="#" style="color:#ccc; text-decoration:none;">Products</a></p>
-        <p><a href="#" style="color:#ccc; text-decoration:none;">Contact</a></p>
+        <p><a href="#home" style="color:#ccc; text-decoration:none;">Home</a></p>
+        <p><a href="#Products" style="color:#ccc; text-decoration:none;">Products</a></p>
+        <p><a href="#Contact" style="color:#ccc; text-decoration:none;">Contact</a></p>
       </div>
     </div>
     <p style="margin-top:20px; color:#888;">&copy; 2025 MobixHub. All rights reserved.</p>
   </footer>
 
+  <!-- ✅ Promo Logic -->
   <script>
+    // Promo codes and associated phones (reference only)
+    const promoList = [
+      { code: "FREE00", phone: "08012345678" },
+      { code: "DISCOUNT25", phone: "07098765432" },
+      // Add more promo codes here
+    ];
+
     function goToSignup() {
-      const code = document.getElementById("promoCode").value.trim();
-      if (code.toUpperCase() === "FREE100") {
-        window.location.href = "signup.html?promo=FREE100";
-      } else if (code === "") {
+      const enteredCode = document.getElementById("promoCode").value.trim().toUpperCase();
+      const match = promoList.find(promo => promo.code === enteredCode);
+
+      if (match) {
+        // Redirect with promo and phone (for reference)
+        const url = `signup.html?promo=${encodeURIComponent(match.code)}&phone=${encodeURIComponent(match.phone)}`;
+        window.location.href = url;
+      } else if (enteredCode === "") {
+        // No promo code entered, continue
         window.location.href = "signup.html";
       } else {
         alert("Invalid promo code");
