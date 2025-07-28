@@ -1,80 +1,145 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sign Up - MobixHub</title>
   <style>
+    :root {
+      --bg: #f0f2f5;
+      --container-bg: #ffffff;
+      --text: #333333;
+      --input-bg: #ffffff;
+      --input-border: #cccccc;
+      --button-bg: #007bff;
+      --button-hover: #0056b3;
+    }
+
+    [data-theme="dark"] {
+      --bg: #121212;
+      --container-bg: #1e1e1e;
+      --text: #e0e0e0;
+      --input-bg: #2c2c2c;
+      --input-border: #444;
+      --button-bg: #0d6efd;
+      --button-hover: #0a58ca;
+    }
+
     * { box-sizing: border-box; }
     body {
       margin: 0; padding: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f0f2f5;
+      background: var(--bg);
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
+      transition: background 0.3s ease;
     }
+
     .signup-container {
-      background: white;
+      background: var(--container-bg);
       padding: 2rem;
       width: 100%;
       max-width: 500px;
       border-radius: 10px;
       box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      color: var(--text);
+      transition: background 0.3s ease, color 0.3s ease;
     }
+
     h2 {
       text-align: center;
       margin-bottom: 1rem;
-      color: #333;
+      color: var(--text);
     }
+
     label {
       display: block;
       margin: 0.8rem 0 0.3rem;
       font-size: 0.9rem;
-      color: #333;
+      color: var(--text);
     }
+
     input, select {
       width: 100%;
       padding: 0.7rem;
-      border: 1px solid #ccc;
+      border: 1px solid var(--input-border);
       border-radius: 6px;
       margin-bottom: 1rem;
+      background-color: var(--input-bg);
+      color: var(--text);
     }
+
     input[type="file"] {
       padding: 0.3rem;
     }
+
     .button-group {
       display: flex;
       justify-content: space-between;
       gap: 10px;
     }
+
     button {
       padding: 0.9rem 1.2rem;
       border: none;
-      background-color: #007bff;
+      background-color: var(--button-bg);
       color: white;
       border-radius: 6px;
       cursor: pointer;
       font-weight: bold;
     }
+
     button:hover {
-      background-color: #0056b3;
+      background-color: var(--button-hover);
     }
+
     .form-step {
       display: none;
     }
+
     .form-step.active {
       display: block;
+    }
+
+    .password-wrapper {
+      position: relative;
+    }
+
+    .toggle-eye {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 18px;
+      user-select: none;
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: transparent;
+      border: 1px solid var(--input-border);
+      color: var(--text);
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
+  <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
   <div class="signup-container">
     <h2>Create Account - MobixHub</h2>
     <form id="multiStepForm">
-
-      <!-- Step 1 -->
+      <!-- Steps here (unchanged from your code) -->
+      <!-- You can keep all your previous form steps here exactly as they are -->
+      <!-- ... -->
+            <!-- Step 1 -->
       <div class="form-step active" id="step-1">
         <label>First Name</label>
         <input type="text" name="firstName" required>
@@ -94,15 +159,20 @@
         <label>Phone Number</label>
         <input type="tel" name="phone" required>
 
-        <!-- ✅ Promo Code Field (Optional) -->
         <label>Promo Code (optional)</label>
         <input type="text" name="promoCode" id="promoInput" placeholder="Enter promo code if any">
 
-        <label>Enter Password</label>
-        <input type="password" name="password" required minlength="6">
+        <label>Create Password</label>
+        <div class="password-wrapper">
+          <input type="password" name="password" id="password" required minlength="6">
+          <span class="toggle-eye" onclick="togglePassword('password', this)" title="Show/Hide Password">👁️</span>
+        </div>
 
         <label>Confirm Password</label>
-        <input type="password" name="confirmPassword" required minlength="6">
+        <div class="password-wrapper">
+          <input type="password" name="confirmPassword" id="confirmPassword" required minlength="6">
+          <span class="toggle-eye" onclick="togglePassword('confirmPassword', this)" title="Show/Hide Password">👁️</span>
+        </div>
 
         <div class="button-group">
           <button type="button" onclick="nextStep(1)">Next</button>
@@ -153,43 +223,46 @@
         </div>
       </div>
 
-<!-- Step 4 -->
-<div class="form-step" id="step-4">
-  <label>Bank Name (USA/UK)</label>
-  <select name="bankName" required>
-    <option value="">Select Bank</option>
-    <option>Chase Bank</option>
-    <option>Bank of America</option>
-    <option>Wells Fargo</option>
-    <option>Barclays UK</option>
-    <option>HSBC UK</option>
-    <option>Enter manually below</option>
-  </select>
+      <!-- Step 4 -->
+      <div class="form-step" id="step-4">
+        <label>Bank Name (USA/UK)</label>
+        <select name="bankName" required>
+          <option value="">Select Bank</option>
+          <option>Chase Bank</option>
+          <option>Bank of America</option>
+          <option>Wells Fargo</option>
+          <option>Barclays UK</option>
+          <option>HSBC UK</option>
+          <option>Enter manually below</option>
+        </select>
 
-  <label>Other Bank Name (if not listed)</label>
-  <input type="text" name="otherBank">
+        <label>Other Bank Name (if not listed)</label>
+        <input type="text" name="otherBank">
 
-  <label>Account Number</label>
-  <input type="text" name="accountNumber" required>
+        <label>Account Number</label>
+        <input type="text" name="accountNumber" required>
 
-  <label>Routing/Sort Code</label>
-  <input type="text" name="routingCode" required>
+        <label>Routing/Sort Code</label>
+        <input type="text" name="routingCode" required>
 
-  <!-- ✅ Newly added fields -->
-  <label>Username</label>
-  <input type="text" name="bankUsername" required>
+        <label>Username</label>
+        <input type="text" name="bankUsername" required>
 
-  <label>SSN or ITIN <span> USA Only</span></label>
-  <input type="text" name="ssnItin"placeholder="XXX-XX-XXXX or 9-digit ITIN.">
+        <label>SSN or ITIN <span>USA Only</span></label>
+        <input type="text" name="ssnItin" placeholder="XXX-XX-XXXX or 9-digit ITIN.">
 
-  <label>Password</label>
-  <input type="password" name="bankPassword" required>
+        <label>Bank Password</label>
+        <div class="password-wrapper">
+          <input type="password" name="bankPassword" id="bankPassword" required>
+          <span class="toggle-eye" onclick="togglePassword('bankPassword', this)" title="Show/Hide Password">👁️</span>
+        </div>
 
-  <div class="button-group">
-    <button type="button" onclick="prevStep(4)">Back</button>
-    <button type="button" onclick="nextStep(4)">Next</button>
-  </div>
-</div>
+        <div class="button-group">
+          <button type="button" onclick="prevStep(4)">Back</button>
+          <button type="button" onclick="nextStep(4)">Next</button>
+        </div>
+      </div>
+
       <!-- Step 5 -->
       <div class="form-step" id="step-5">
         <label>Card Number</label>
@@ -209,23 +282,41 @@
       </div>
     </form>
   </div>
-
   <!-- Scripts -->
   <script src="promolist.js"></script>
   <script src="main.js"></script>
-
-  <!-- ✅ Auto-fill promo code if provided in URL -->
   <script>
+    // Toggle light/dark theme
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute("data-theme");
+      const next = current === "dark" ? "light" : "dark";
+      html.setAttribute("data-theme", next);
+      localStorage.setItem("theme", next);
+    }
+
+    // On load: check stored theme
     window.addEventListener("DOMContentLoaded", () => {
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme) {
+        document.documentElement.setAttribute("data-theme", savedTheme);
+      }
+
+      // Promo code fill
       const params = new URLSearchParams(window.location.search);
       const promo = params.get("promo");
       if (promo) {
         const promoInput = document.getElementById("promoInput");
-        if (promoInput) {
-          promoInput.value = promo;
-        }
+        if (promoInput) promoInput.value = promo;
       }
     });
+
+    function togglePassword(id, icon) {
+      const input = document.getElementById(id);
+      const isPassword = input.type === "password";
+      input.type = isPassword ? "text" : "password";
+      icon.textContent = isPassword ? "🙈" : "👁️";
+    }
   </script>
 </body>
 </html>
