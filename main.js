@@ -130,7 +130,7 @@ document.getElementById("multiStepForm").addEventListener("submit", function (e)
           }
 
           statusMsg.style.color = "green";
-          statusMsg.textContent = "✅ redirecting.......;
+          statusMsg.textContent = "✅redirecting....";
           setTimeout(() => {
             window.location.href = "approve_acc.html";
           }, 1500);
